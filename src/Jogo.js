@@ -1,5 +1,7 @@
 import React from "react";
 import palavras from "./palavras";
+import App from "./App";
+import {obj, setobj} from "./App"
 
 let imagens = [
     "assets/forca0.png",
@@ -11,33 +13,42 @@ let imagens = [
     "assets/forca6.png"
 ];
 
-export default function Jogo(acao) {
-    
-   
-    if (acao == "iniciar") { 
-        let numImagem = 0;
-        let numero_sorteado = gereNumeroInteiroEntre(0, palavras.length);
-        let palavra_sorteada = palavras[numero_sorteado];
-        const array_palavra_escolhida = palavra_sorteada.split(''); // Cria array das letras separadas 
-        let array_mostrar_palavra = [];
-        array_palavra_escolhida.map((i) => ( array_mostrar_palavra.push = "_" ));
-    }
-    else if (acao == "erro") { 
-        numImagem = numImagem + 1; 
-    }
-    else if (acao == "acerto") { 
-        console.log("Acertou Miseravi!");
-    }
 
 
-    imagem = imagens[numImagem];
-    
+export default function Jogo({obj, setobj}) {
+    let [mostrarLetras, setmostrarLetras] = React.useState(obj.letrasAparecendoTxt);
+    let [mostrarImagem, setmostrarImagem] = React.useState(obj.imagem);
+
+    function iniciaJogo({obj, setobj}) {
+        console.log("Entrou no inicia Jogo");
+        setobj.imagemNum(0);
+        obj.imagem = imagens[0];
+        obj.palavra = sortearPalavra();
+        obj.palavraArray = obj.palavra.split(''); 
+        obj.letrasAparecendoArray = [];
+        obj.letrasAparecendoTxt = "";
+        obj.palavraArray.map((i, n) => {
+            obj.letrasAparecendoArray.push = "_";
+            obj.letrasAparecendoTxt+=" _ ";
+        })
+        obj.status = "iniciado"; 
+        setmostrarLetras(obj.letrasAparecendoTxt);
+        setmostrarImagem(obj.imagem);
+        console.log("imagem = "+obj.imagem);
+        console.log("Palavra sorteada = "+obj.palavra);
+        console.log("Letras aparecendo = "+obj.letrasAparecendoTxt);
+        setobj(obj);
+        console.log("Status do jogo = "+obj.status);
+        console.log("Obj: "+obj);
+    }
+  
+
     return (
         <div class="container_cima">
-        <div class="forca"> <img src={imagem}/> </div>
+        <div class="forca"> <img src={mostrarImagem}/> </div>
         <div class="botao_e_palavra">
-            <input type="button" class="botao_escolher" value="Escolher palavra"></input>
-            <div class="palavra">{mostrar_palavra}</div>
+            <input type="button" class="botao_escolher" value="Escolher palavra" onClick={() => iniciaJogo({obj, setobj})}></input>
+            <div class="palavra">{mostrarLetras}</div>
         </div>
         </div>
     );
@@ -48,3 +59,9 @@ function gereNumeroInteiroEntre(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min);
   }
+
+
+function sortearPalavra() {
+    let numero_sorteado = gereNumeroInteiroEntre(0, palavras.length);
+    return palavras[numero_sorteado];
+}
