@@ -1,16 +1,33 @@
 import React from "react";
-import { useState } from "react";
 import Jogo from "./Jogo";
+import { useState } from "react";
 import Letras from "./Letras";
 
-let [Acao, setAcao] = React.useState("");
 
-export default function App() {
+export default function App(props) {
+  console.log("App acionado");
+ 
+
+  const [obj, setobj] = React.useState ({
+        imagemNum: 0,
+        imagem: "assets/forca0.png",
+        palavra: "",
+        palavraArray: [],
+        letrasAparecendoArray: [],
+        letrasAparecendoTxt: "",
+        letrasClicadas: [],
+        status: "inicio",
+        statusBotoesLetras: []
+  });
+
+
     return (
       <div className="App">
-       <Jogo/>
-       <Letras/>
+       <Jogo obj={obj} setobj={setobj} />
+       <Letras obj={obj} setobj={setobj}/>
       </div>
     );
   }
+
+
 
